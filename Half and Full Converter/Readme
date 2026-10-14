@@ -1,0 +1,36 @@
+## 📖 Theory of Operation: Inverters
+
+Inverters are power electronic circuits that convert a DC input voltage ($V_{dc}$) into an alternating AC output voltage ($v_{out}$) at a desired frequency and amplitude. This is achieved by alternating the switching states of semiconductor devices (such as MOSFETs or IGBTs) arranged in bridge topologies.
+
+---
+
+### 🔲 1. Half-Bridge Inverter
+The Half-Bridge inverter utilizes two complementary switches ($S_1$ and $S_2$) connected in series across a single DC source, paired with a split-capacitor bank ($C_1$ and $C_2$) that creates a neutral midpoint ($0$). 
+
+#### 🔄 Operating States
+To prevent a catastrophic short circuit (shoot-through), the two switches must never be turned on simultaneously. A small dead-time is introduced between states.
+* **State 1 ($S_1$ ON, $S_2$ OFF):** The load is connected to the upper capacitor ($C_1$). Current flows through $S_1$ and the load back to the midpoint. The instantaneous output voltage is:
+  $$v_{out} = +\frac{V_{dc}}{2}$$
+* **State 2 ($S_1$ OFF, $S_2$ ON):** The load is connected across the lower capacitor ($C_2$). Current flows in the opposite direction through the load and $S_2$. The instantaneous output voltage is:
+  $$v_{out} = -\frac{V_{dc}}{2}$$
+
+#### 📐 Performance Output
+For a fundamental square wave gating sequence with a $50\%$ duty cycle, the root-mean-square (**RMS**) value of the fundamental output voltage component is:
+$$V_{out1,(rms)} = \frac{2}{\sqrt{2}\pi} V_{dc} \approx 0.45 \, V_{dc}$$
+
+---
+
+### 🔳 2. Full-Bridge (H-Bridge) Inverter
+The Full-Bridge inverter consists of four switches ($S_1, S_2, S_3, S_4$) arranged in an "H" configuration. It eliminates the need for a split-capacitor midpoint and allows the full DC bus voltage to be applied across the load.
+
+#### 🔄 Operating States
+The switches operate in diagonal pairs to alternate the polarity of the voltage delivered to the load.
+* **State 1 ($S_1, S_4$ ON; $S_2, S_3$ OFF):** The DC voltage is applied directly across the load. Current flows from left to right. The instantaneous output voltage is:
+  $$v_{out} = +V_{dc}$$
+* **State 2 ($S_2, S_3$ ON; $S_1, S_4$ OFF):** The connection to the load is reversed. Current flows from right to left. The instantaneous output voltage is:
+  $$v_{out} = -V_{dc}$$
+* **Zero-Voltage States (Optional for PWM):** Turning both upper switches ($S_1, S_3$) or both lower switches ($S_2, S_4$) ON shorts the load terminals, forcing the output voltage to $0$.
+
+#### 📐 Performance Output
+Because it utilizes the full DC rail, the Full-Bridge configuration doubles the output voltage capacity of the Half-Bridge. For a standard square wave gating sequence, the fundamental **RMS** output voltage component is:
+$$V_{out1,(rms)} = \frac{4}{\sqrt{2}\pi} V_{dc} \approx 0.90 \, V_{dc}$$
